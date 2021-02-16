@@ -8,12 +8,15 @@ WORKDIR /app/api
 COPY ./ /app/api
 
 # Copy custom.ini
-COPY ../docker/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
 RUN set -ex && \
     apk update && \
-    apk add composer && \
-    chown -R www-data:www-data /api/storage /api/bootstrap/cache
+    apk add composer
+
+RUN composer install
+
+RUN chown -R www-data:www-data /app/api/storage /app/api/bootstrap/cache
 
 # Install Extensions
 RUN docker-php-ext-install pdo pdo_mysql
+

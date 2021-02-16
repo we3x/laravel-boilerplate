@@ -1,8 +1,7 @@
 version: '3'
 services:
   laravel:
-    build:
-      context: .
+    build: ./api
     container_name: laravel
     depends_on:
       - db
@@ -25,6 +24,7 @@ services:
     container_name: nginx
     depends_on:
       - laravel
+      - frontend
     environment:
       - NGINX_SERVER_NAME=_
       - NGINX_PORT=80
