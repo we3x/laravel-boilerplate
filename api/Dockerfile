@@ -2,18 +2,18 @@
 FROM php:fpm-alpine
 
 # Set working directory
-WORKDIR /app
+WORKDIR /app/api
 
 # Copy all files to container
-COPY ./src /app
+COPY ./ /app/api
 
 # Copy custom.ini
-COPY ./docker/custom.ini /usr/local/etc/php/conf.d/custom.ini
+COPY ../docker/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
 RUN set -ex && \
     apk update && \
     apk add composer && \
-    chown -R www-data:www-data /app/storage /app/bootstrap/cache
+    chown -R www-data:www-data /api/storage /api/bootstrap/cache
 
 # Install Extensions
 RUN docker-php-ext-install pdo pdo_mysql

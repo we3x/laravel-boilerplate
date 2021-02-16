@@ -2,11 +2,15 @@
 server {
     listen 80;
     server_name ${NGINX_SERVER_NAME};
-    root /app/public;
+    root /app;
     client_max_body_size ${NGINX_MAX_BODY};
 
+    location /api {
+        try_files $uri /api/public/index.php?$args;
+    }
+
     location / {
-        try_files $uri /index.php?$args;
+        proxy_pass http://frontend:3000;
     }
 
     location ~ \.php$ {

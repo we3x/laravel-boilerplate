@@ -7,11 +7,22 @@ services:
     depends_on:
       - db
     volumes:
-      - ./src:/app
+      - ./api:/app/api
 
-  web:
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    volumes:
+      - ./frontend:/app/frontend
+      - /frontend/node_modules
+    command: npm start
+    ports:
+      - "3000:3000"
+
+
+  nginx:
     image: nginx
-    container_name: web
+    container_name: nginx
     depends_on:
       - laravel
     environment:
@@ -25,7 +36,8 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./src:/app
+      - ./api:/app/api
+      - ./frontend:/app/frontend
       - ./docker/vhost.template:/etc/nginx/conf.d/vhost.template
 
   db:
